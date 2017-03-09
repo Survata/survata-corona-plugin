@@ -1,0 +1,1 @@
+# survata-corona-plugin
