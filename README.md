@@ -1,3 +1,4 @@
+
 # survata-corona-plugin
 
 # survata.*
@@ -13,7 +14,7 @@
 
 ## Overview
 
-The survata plugin enables survata surveys to be added to your applications.
+The survata plugin enables Survata survey walls to be added to your applications which offer content as affiliates.
 
 ## Sign Up
 
@@ -77,6 +78,7 @@ More support is available from the Survata team:
 * [Forum](http://forum.coronalabs.com/plugin/survata)
 * [Plugin Publisher](http://www.survata.com)
 
+
 # survata.init()
 
 > --------------------- ------------------------------------------------------------------------------------------
@@ -96,11 +98,14 @@ Initialize the Survata sdk with a publisher ID.
 
 ## Syntax
 
-	survata.init( publisherId )
-	survata.init( publisherId, testmode )
+  survata.init( publisherId, listener)
+	survata.init( publisherId, listener, testmode )
 
 ##### publisherId ~^(required)^~
 _[String][api.type.String]._ Your publisher Id from the survata dashboard for your surveys.
+
+##### listener ~^(required)^~
+_[Listener][api.type.Listener]._ Survey status listener, which returns status of survey availability.
 
 ##### testmode ~^(optional)^~
 _[String][api.type.String]._ Enable test mode for testing connectivity to Survata. Pass the string "test" as a value to the init function as the second argument.
@@ -110,9 +115,9 @@ _[String][api.type.String]._ Enable test mode for testing connectivity to Survat
 ``````lua
 local survata = require("plugin.survata")
 
-survata.init("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx") -- Pass in your publisher Id
+survata.init("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",listener) -- Pass in publisher Id and listener
 -- or
-survata.init("a152f0c5-0ba4-4b3e-8a0a-07ec9f96c5fd","test") -- Pass in test publisher Id, and set TestMode
+survata.init("a152f0c5-0ba4-4b3e-8a0a-07ec9f96c5fd",listener,"test") -- Pass in test publisher Id, and set TestMode
 ``````
 
 # survata.show()
@@ -134,12 +139,16 @@ Show a Survata Survey, should only be called after initialization.
 
 ## Syntax
 
-	survata.show()
+	survata.show(listener)
+
+##### listener ~^(required)^~
+_[Listener][api.type.Listener]._ Survey wall statys listener, which returns status of survey wall availability, result of survey and user actions.
+Possible status return values: completed,skipped,cancelled,credit earned,no survey available,network not available
 
 ## Examples
 
 ``````lua
 local survata = require("plugin.survata")
-survata.init("a152f0c5-0ba4-4b3e-8a0a-07ec9f96c5fd","test")
-survata.show() -- called after survata sdk initialized
+survata.init("a152f0c5-0ba4-4b3e-8a0a-07ec9f96c5fd",surveyListener)
+survata.show(listener) -- called after survata sdk initialized
 ``````
